@@ -29,6 +29,7 @@
             android:fontFamily="@font/roboto_regular"/>
 
         <EditText
+            android:id="@+id/edittext_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="E-mail"
@@ -41,6 +42,7 @@
             android:textSize="20sp"/>
 
         <EditText
+            android:id="@+id/edittext_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
@@ -61,7 +63,7 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/inicio_sesion"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesion"
