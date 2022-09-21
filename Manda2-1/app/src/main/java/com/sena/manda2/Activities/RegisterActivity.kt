@@ -56,7 +56,7 @@ class RegisterActivity : AppCompatActivity() {
         if(isValidForm( name = name, phone = phone, lastname = lastname, email = email, password = password, confirmPassword = confirmPassword)){
             Toast.makeText(this,"El formulario es valido ",Toast.LENGTH_SHORT).show()
         }
-        
+
 
         Log.d(TAG,"El nombre es: $name")
         Log.d(TAG,"El apellido es: $lastname")
