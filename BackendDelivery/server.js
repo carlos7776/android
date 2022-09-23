@@ -4,34 +4,55 @@ const http = require('http');
 const server = http.createServer(app);
 const logger = require('morgan');
 const cors = require('cors');
-
-const port = process.env.PORT || 3000;
+ 
+ 
+/*
+* RUTAS
+*/
+const users = require('./routes/usersRoutes');
+ 
+const port = process.env.PORT || 3001;
+ 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
-    extended:true
+    extended: true
 }));
+ 
 app.use(cors());
-
+ 
+ 
 app.disable('x-powered-by');
-
-app.set('port',port);
-
-server.listen(3000,'10.183.145.240' || 'localhost',function(){
-   console.log('Aplicacion de NodeJS ' + port + ' iniciada...')
+ 
+app.set('port', port);
+ 
+/*
+* LLAMANDO A LAS RUTAS
+*/
+users(app);
+ 
+server.listen(3001, '192.168.0.17' || 'localhost', function() {
+    console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
-app.get('/',(req,res)=>{
-    res.send('Ruta raiz del backend')
+app.get('/',(req, res) => {
+    res.send('Ruta raiz')
 });
-app.get('/test',(req,res)=>{
-    res.send('Esta es la ruta TEST')
+app.get('/test',(req, res) => {
+    res.send('esta es una ruta de testeo')
 });
-
-app.use((err,req,res,next) => {
+ 
+// ERROR HANDLER
+app.use((err, req, res, next) => {
     console.log(err);
-    res.status(err.status || 500).send(err,stack)
+    res.status(err.status || 500).send(err.stack);
 });
-// 200- es una respuesta exitosa
-// 404- significa q la url no existe 
-// 500- error interno del servidor
+ 
+module.exports = {
+    app: app,
+    server: server
+}
+ 
+// 200 - ES UN RESPUESTA EXITOSA
+// 404 - SIGNIFICA QUE LA URL NO EXISTE
+// 500 - ERROR INTERNO DEL SERVIDOR
