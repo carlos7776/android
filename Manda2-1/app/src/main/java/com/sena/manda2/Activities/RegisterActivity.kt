@@ -10,6 +10,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import com.sena.manda2.R
+import com.sena.manda2.models.ResponseHttp
+import com.sena.manda2.models.User
+import com.sena.manda2.providers.UsersProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,6 +29,8 @@ class RegisterActivity : AppCompatActivity() {
     var editTextPassword: EditText? = null
     var editTextConfirmPassword: EditText? = null
     var buttonRegister:Button? = null
+
+    var usersProvider = UsersProvider()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,16 +62,37 @@ class RegisterActivity : AppCompatActivity() {
         val confirmPassword = editTextConfirmPassword?.text.toString()
 
         if(isValidForm( name = name, phone = phone, lastname = lastname, email = email, password = password, confirmPassword = confirmPassword)){
-            Toast.makeText(this,"El formulario es valido ",Toast.LENGTH_SHORT).show()
+
+            val user = User(
+                name = name,
+                lastname = lastname,
+                email = email,
+                phone = phone,
+                password = password
+            )
+
+            usersProvider.register(user)?.enqueue(object : Callback<ResponseHttp>{
+                override fun onResponse(
+                    call: Call<ResponseHttp>, response: Response<ResponseHttp>
+                ) {
+                    Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_LONG).show()
+
+                    Log.d (TAG, "response: ${response} ")
+                    Log.d (TAG, "Body: ${response.body()} ")
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+
+                    Log.d(TAG,"SE PRODUJO UN ERROR  ${t.message}")
+                    Toast.makeText(this@RegisterActivity, "SE PRODUJO UN ERROR  ${t.message}", Toast.LENGTH_LONG).show()
+                }
+
+            })
+
         }
 
 
-        Log.d(TAG,"El nombre es: $name")
-        Log.d(TAG,"El apellido es: $lastname")
-        Log.d(TAG,"El email es: $email")
-        Log.d(TAG,"El telefono es: $phone")
-        Log.d(TAG,"El contraseña es: $password")
-        Log.d(TAG,"El confirmar contraseña es: $confirmPassword")
+
     }
     fun String.isEmailValid():Boolean{
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()

@@ -26,7 +26,9 @@ module.exports = {
             return res.status(201).json({
                 success: true,
                 message: 'El registro se relizo correctamente',
-                data: data.id
+                data:{
+                    'id': data.id
+                }
             })
 
         } catch (error) {
