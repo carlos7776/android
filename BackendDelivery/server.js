@@ -4,6 +4,14 @@ const http = require('http');
 const server = http.createServer(app);
 const logger = require('morgan');
 const cors = require('cors');
+const passport = require('passport')
+var expressSession = require("express-session");
+ 
+app.use(expressSession({
+    secret: "This is one hell of a secret",
+    resave: false,
+    saveUninitialized: false
+  }));
  
  
 /*
@@ -20,7 +28,10 @@ app.use(express.urlencoded({
 }));
  
 app.use(cors());
- 
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
  
 app.disable('x-powered-by');
  
