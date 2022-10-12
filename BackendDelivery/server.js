@@ -42,7 +42,7 @@ app.set('port', port);
 */
 users(app);
  
-server.listen(3001, '192.168.0.17' || 'localhost', function() {
+server.listen(3001, '10.183.156.45' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
