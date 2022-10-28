@@ -8,8 +8,6 @@ CREATE TABLE roles(
 	updated_at TIMESTAMP(0) NOT NULL	
 );
 
-
-
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
  	id BIGSERIAL PRIMARY KEY,
@@ -35,7 +33,7 @@ CREATE TABLE user_has_roles(
 	PRIMARY KEY(id_user, id_rol)
 
 );
-
+/*inserta los datos a la tabla roles*/  
 INSERT INTO roles(
 	name,
 	route,
@@ -46,9 +44,9 @@ INSERT INTO roles(
 VALUES(
  	'CLIENTE',
 	'client/home',
-	'https://www.awicons.com/free-icons/download/application-icons/dragon-soft-icons-by-artua.com/png/512/User.png',
-	'2022-10-5',
-	'2022-10-5'
+	'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/User_icon_1.svg/800px-User_icon_1.svg.png',
+	'2022-10-19',
+	'2022-10-19'
 );
 
 INSERT INTO roles(
@@ -61,9 +59,9 @@ INSERT INTO roles(
 VALUES(
  	'RESTAURANTE',
 	'restaurant/home',
-	'https://cdn.pixabay.com/photo/2021/05/25/02/03/restaurant-6281067_1280.png',
-	'2022-10-5',
-	'2022-10-5'
+	'https://png.pngtree.com/element_origin_min_pic/17/06/22/a394802ed2d0bdb3bc72de3b75d358e4.jpg',
+	'2022-10-19',
+	'2022-10-19'
 );
 INSERT INTO roles(
 	name,
@@ -75,7 +73,7 @@ INSERT INTO roles(
 VALUES(
  	'REPARTIDOR',
 	'delivery/home',
-	'https://www.kindpng.com/picc/m/145-1452108_transparent-scooter-clipart-motorcycle-delivery-icon-png-png.png',
-	'2022-10-5',
-	'2022-10-5'
+	'https://png.pngtree.com/png-vector/20210618/ourlarge/pngtree-cute-food-delivery-workers-dressed-in-uniforms-png-image_3495096.jpg',
+	'2022-10-19',
+	'2022-10-19'
 );

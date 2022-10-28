@@ -9,10 +9,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.gson.Gson
+import com.sena.manda2.Activities.client.home.ClientHomeActivity
 import com.sena.manda2.R
 import com.sena.manda2.models.ResponseHttp
 import com.sena.manda2.models.User
 import com.sena.manda2.providers.UsersProvider
+import com.sena.manda2.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,6 +78,11 @@ class RegisterActivity : AppCompatActivity() {
                 override fun onResponse(
                     call: Call<ResponseHttp>, response: Response<ResponseHttp>
                 ) {
+                    if (response.body()?.isSuccess == true){
+                        saveUserInSession(response.body()?.data.toString())
+                        goToClientHome()
+                    }
+
                     Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_LONG).show()
 
                     Log.d (TAG, "response: ${response} ")
@@ -91,9 +99,20 @@ class RegisterActivity : AppCompatActivity() {
 
         }
 
-
-
     }
+
+    private fun goToClientHome(){
+        val i = Intent(this, ClientHomeActivity::class.java)
+        startActivity(i)
+    }
+
+    private fun saveUserInSession(data:String){
+        val sharedPref = SharedPref(this)
+        val gson = Gson()
+        val user = gson.fromJson(data, User::class.java)
+        sharedPref.save("user", user)
+    }
+
     fun String.isEmailValid():Boolean{
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }

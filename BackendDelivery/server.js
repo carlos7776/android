@@ -17,7 +17,6 @@ app.use(expressSession({
 /*
 * RUTAS
 */
-//aaanode 
 const users = require('./routes/usersRoutes');
  
 const port = process.env.PORT || 3001;
@@ -43,7 +42,7 @@ app.set('port', port);
 */
 users(app);
  
-server.listen(3001, '10.183.156.45' || 'localhost', function() {
+server.listen(3001, '10.183.157.7' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
