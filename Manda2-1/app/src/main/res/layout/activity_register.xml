@@ -123,7 +123,7 @@ tools:context=".Activities.MainActivity">
         android:background="@drawable/round_button"/>
 
     <ImageView
-        android:tint="@color/green"
+        android:backgroundTint="@color/green"
         android:id="@+id/delvolver"
         android:layout_width="30dp"
         android:layout_height="30dp"
