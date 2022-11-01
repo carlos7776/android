@@ -1,7 +1,8 @@
 package com.sena.manda2.Activities
 
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -12,6 +13,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.google.gson.Gson
 import com.sena.manda2.Activities.client.home.ClientHomeActivity
+import com.sena.manda2.Activities.delivery.home.DeliveryHomeActivity
+import com.sena.manda2.Activities.restaurant.home.RestaurantHomeActivity
 import com.sena.manda2.R
 import com.sena.manda2.models.ResponseHttp
 import com.sena.manda2.models.User
@@ -86,11 +89,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToClientHome(){
         val i = Intent(this, ClientHomeActivity::class.java)
+        i.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(i)
+    }
+    private fun goToRestaurantHome(){
+        val i = Intent(this, RestaurantHomeActivity::class.java)
+        i.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(i)
+    }
+    private fun goToDeliveryHome(){
+        val i = Intent(this, DeliveryHomeActivity::class.java)
+        i.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
         startActivity(i)
     }
 
     private fun goToSelectRol(){
         val i = Intent(this, SelectRolesActivity::class.java)
+        i.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
         startActivity(i)
     }
 
@@ -119,7 +134,27 @@ class MainActivity : AppCompatActivity() {
         if(!sharedPref.getData("user").isNullOrBlank()){
             //si el usuario existe en session
             val user = gson.fromJson(sharedPref.getData("user"), User::class.java)
-            goToClientHome()
+
+            if (!sharedPref.getData("rol").isNullOrBlank()){
+                // si exite o selecciono el rol
+                val rol = sharedPref.getData("rol")?.replace("\"", "")
+
+                if (rol == "RESTAURANTE"){
+                    goToRestaurantHome()
+                }
+                else if (rol == "CLIENTE"){
+                    goToClientHome()
+                }
+                else if (rol == "REPARTIDOR"){
+                    goToDeliveryHome()
+                }
+            }
+        else {
+                goToClientHome()
+        }
+
+
+
         }
     }
     private fun isValidForm(email:String,password:String):Boolean{
