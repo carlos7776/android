@@ -4,29 +4,49 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.gson.Gson
 import com.sena.manda2.Activities.client.home.ClientHomeActivity
 import com.sena.manda2.R
+import com.sena.manda2.models.ResponseHttp
+import com.sena.manda2.models.User
+import com.sena.manda2.providers.UsersProvider
+import com.sena.manda2.utils.SharedPref
 import de.hdodenhof.circleimageview.CircleImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class SaveImageActivity : AppCompatActivity() {
+
+
+    val TAG = "SaveImageActivity"
 
     var circleImageUser: CircleImageView? = null
     var buttonNext: Button? = null
     var buttonConfirm: Button? = null
 
-    private var ImageFile: File? = null
+    private var imageFile: File? = null
+
+    var usersProvider = UsersProvider()
+    var user:User? = null
+    var sharedPref: SharedPref? = null
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_save_image)
+
+        sharedPref = SharedPref(this)
+
+        getUserFromSession()
 
         circleImageUser = findViewById(R.id.circleimage_user)
         buttonNext = findViewById(R.id.btn_netx)
@@ -36,12 +56,62 @@ class SaveImageActivity : AppCompatActivity() {
 
 
         buttonNext?.setOnClickListener{ goToClientHome() }
-        buttonConfirm?.setOnClickListener{ }
+        buttonConfirm?.setOnClickListener{ saveImage() }
     }
+
+    private fun saveImage(){
+
+        if (imageFile != null && user != null){
+
+            usersProvider.update(imageFile!!, user!!)?.enqueue(object: Callback<ResponseHttp>{
+                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+
+                    Log.d(TAG,"RESPONSE: $response")
+                    Log.d(TAG,"BODY: ${response.body()}")
+
+                    saveUserInSession(response.body()?.data.toString())
+
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    Log.d(TAG,"Error: ${t.message}")
+                    Toast.makeText(this@SaveImageActivity,"Error: ${t.message}",Toast.LENGTH_LONG).show()
+
+                }
+
+            })
+
+        }
+
+        else{
+            Toast.makeText(this,"La imagen no puede ser nula ni tampoco los datos de session del usuario  ",Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    private fun saveUserInSession(data:String){
+
+        val gson = Gson()
+        val user = gson.fromJson(data, User::class.java)
+        sharedPref?.save("user", user)
+        goToClientHome()
+    }
+
     private fun goToClientHome(){
         val i = Intent(this, ClientHomeActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(i)
+    }
+    private fun getUserFromSession(){
+
+        val gson = Gson()
+
+        if(!sharedPref?.getData("user").isNullOrBlank()){
+            //si el usuario existe en session
+             user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
+
+        }
+
     }
 
     private  val startImageForResult =
@@ -52,7 +122,7 @@ class SaveImageActivity : AppCompatActivity() {
 
             if (resultCode == Activity.RESULT_OK){
                 val fileUri = data?.data
-                ImageFile = File(fileUri?.path)
+                imageFile = File(fileUri?.path)
                 circleImageUser?.setImageURI(fileUri)
             }
             else if (resultCode == ImagePicker.RESULT_ERROR){

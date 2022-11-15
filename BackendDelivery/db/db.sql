@@ -2,16 +2,15 @@ DROP TABLE IF EXISTS roles CASCADE;
 CREATE TABLE roles(
 	id BIGSERIAL PRIMARY KEY,
 	name VARCHAR(180) NOT NULL UNIQUE,
-	image varchar(255) NULL,
-	route varchar(255) NULL,
+	image VARCHAR(255) NULL, 
+	route VARCHAR(255) NULL,
 	created_at TIMESTAMP(0) NOT NULL,
-	updated_at TIMESTAMP(0) NOT NULL	
+	updated_at TIMESTAMP(0) NOT NULL
 );
 
-DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
- 	id BIGSERIAL PRIMARY KEY,
-	email VARCHAR(255)NOT NULL UNIQUE,
+	id BIGSERIAL PRIMARY KEY,
+	email VARCHAR(255) NOT NULL UNIQUE,
 	name VARCHAR(255) NOT NULL,
 	lastname VARCHAR(255) NOT NULL,
 	phone VARCHAR(80) NOT NULL UNIQUE,
@@ -20,20 +19,20 @@ CREATE TABLE users(
 	is_available BOOLEAN NULL,
 	session_token VARCHAR(255) NULL,
 	created_at TIMESTAMP(0) NOT NULL,
-	updated_at TIMESTAMP(0) NOT NULL	
+	updated_at TIMESTAMP(0) NOT NULL
 );
-DROP TABLE IF EXISTS user_has_roles CASCADE;
+
+DROP TABLE IF EXISTS user_has_r	oles CASCADE;
 CREATE TABLE user_has_roles(
 	id_user BIGSERIAL NOT NULL,
 	id_rol BIGSERIAL NOT NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-	FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,	
+	FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	PRIMARY KEY(id_user, id_rol)
-
 );
-/*inserta los datos a la tabla roles*/  
+
 INSERT INTO roles(
 	name,
 	route,
@@ -44,10 +43,11 @@ INSERT INTO roles(
 VALUES(
  	'CLIENTE',
 	'client/home',
-	'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/User_icon_1.svg/800px-User_icon_1.svg.png',
-	'2022-10-19',
-	'2022-10-19'
+	'https://cdn.pixabay.com/photo/2016/03/31/20/37/client-1295901_1280.png',
+	'2021-10-04',
+	'2021-10-04'
 );
+
 
 INSERT INTO roles(
 	name,
@@ -59,10 +59,12 @@ INSERT INTO roles(
 VALUES(
  	'RESTAURANTE',
 	'restaurant/home',
-	'https://png.pngtree.com/element_origin_min_pic/17/06/22/a394802ed2d0bdb3bc72de3b75d358e4.jpg',
-	'2022-10-19',
-	'2022-10-19'
+	'https://img.icons8.com/color/452/restaurant-.png',
+	'2021-10-04',
+	'2021-10-04'
 );
+
+
 INSERT INTO roles(
 	name,
 	route,
@@ -73,7 +75,7 @@ INSERT INTO roles(
 VALUES(
  	'REPARTIDOR',
 	'delivery/home',
-	'https://png.pngtree.com/png-vector/20210618/ourlarge/pngtree-cute-food-delivery-workers-dressed-in-uniforms-png-image_3495096.jpg',
-	'2022-10-19',
-	'2022-10-19'
+	'https://previews.123rf.com/images/yupiramos/yupiramos1806/yupiramos180620488/103715036-delivery-worker-in-motorcycle-avatar-character-vector-illustration-design.jpg',
+	'2021-10-04',
+	'2021-10-04'
 );

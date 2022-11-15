@@ -1,6 +1,7 @@
-const db = require('../config/cofig');
+const db = require('../config/config');
 
 const Rol = {};
+
 
 Rol.create = (id_user, id_rol) => {
 
@@ -15,7 +16,7 @@ Rol.create = (id_user, id_rol) => {
     VALUES($1, $2, $3, $4)
     `;
 
-    return db.none(sql,[
+    return db.none(sql, [
         id_user,
         id_rol,
         new Date(),
@@ -25,3 +26,4 @@ Rol.create = (id_user, id_rol) => {
 }
 
 module.exports = Rol;
+
