@@ -31,6 +31,8 @@ class ClientHomeActivity : AppCompatActivity() {
        // buttonLogout = findViewById(R.id.btn_logout)
         //buttonLogout?.setOnClickListener{logout()}
 
+        openFrangment(ClientCategoriesFragment())
+
         bootomNavigation = findViewById(R.id.botton_navigation)
         bootomNavigation?.setOnItemSelectedListener {
 

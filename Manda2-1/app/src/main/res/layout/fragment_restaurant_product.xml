@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.client.ClientProfileFragment">
+    tools:context=".fragments.restaurant.RestaurantProductFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/btn_select_rol"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="cambiar rol" />
+        android:layout_height="match_parent"
+        android:text="fragment restaurant product" />
 
 </FrameLayout>
