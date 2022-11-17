@@ -11,4 +11,5 @@ module.exports = (app, upload) => {
 
     // ACTUALIZAR DATOS
     app.put('/api/users/update', upload.array('image', 1), UsersController.update);
+    app.put('/api/users/updateWithoutImage', UsersController.updateithoutImage);
 }

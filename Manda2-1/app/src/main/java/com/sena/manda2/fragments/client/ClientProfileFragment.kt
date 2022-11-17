@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.sena.manda2.Activities.MainActivity
 import com.sena.manda2.Activities.SelectRolesActivity
+import com.sena.manda2.Activities.client.update.ClientUpdateActivity
 import com.sena.manda2.R
 import com.sena.manda2.models.User
 import com.sena.manda2.utils.SharedPref
@@ -55,6 +56,7 @@ class ClientProfileFragment : Fragment() {
 
         buttonSelectRol?.setOnClickListener { goToSelectRol() }
         imageviewlogout?.setOnClickListener { logout() }
+        buttonUpdateProfile?.setOnClickListener { goToUpdate()  }
 
         getUserFromSession()
 
@@ -86,6 +88,11 @@ class ClientProfileFragment : Fragment() {
 
         }
 
+    }
+
+    private fun goToUpdate(){
+        val i = Intent(requireContext(), ClientUpdateActivity::class.java)
+        startActivity(i)
     }
 
     private fun goToSelectRol() {
