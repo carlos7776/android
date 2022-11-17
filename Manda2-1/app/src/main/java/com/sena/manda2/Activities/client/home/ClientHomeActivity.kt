@@ -67,11 +67,7 @@ class ClientHomeActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-    private fun logout(){
-        sharedPref?.remove("user")
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i)
-    }
+
 
     private fun getUserFromSession(){
 

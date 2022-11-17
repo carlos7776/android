@@ -49,7 +49,7 @@ app.set('port', port);
 */
 users(app,upload);
 
-server.listen(3001, '10.183.145.139' || 'localhost', function() {
+server.listen(3001, '192.168.0.22' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
