@@ -1,4 +1,5 @@
 const UsersController = require('../controllers/usersController');
+const passport = require('passport');
 
 module.exports = (app, upload) => {
 
@@ -10,6 +11,8 @@ module.exports = (app, upload) => {
     app.post('/api/users/login', UsersController.login);
 
     // ACTUALIZAR DATOS
-    app.put('/api/users/update', upload.array('image', 1), UsersController.update);
-    app.put('/api/users/updateWithoutImage', UsersController.updateithoutImage);
+    //401 NO AUTORIZADO
+
+    app.put('/api/users/update',passport.authenticate('jwt',{session:false}), upload.array('image', 1), UsersController.update);
+    app.put('/api/users/updateWithoutImage', passport.authenticate('jwt',{session:false}), UsersController.updateithoutImage);
 }
