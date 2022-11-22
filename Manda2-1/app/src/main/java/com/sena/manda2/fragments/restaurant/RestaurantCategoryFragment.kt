@@ -2,6 +2,7 @@ package com.sena.manda2.fragments.restaurant
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +14,32 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.gson.Gson
 import com.sena.manda2.R
+import com.sena.manda2.models.Category
+import com.sena.manda2.models.ResponseHttp
+import com.sena.manda2.models.User
+import retrofit2.Call
+import com.sena.manda2.providers.CategoriesProvider
+import com.sena.manda2.utils.SharedPref
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 
 class RestaurantCategoryFragment : Fragment() {
 
-
+    var TAG = "CategoryFragment"
     var myView: View? = null
     var imageViewCategory: ImageView? = null
     var editTextCategory: EditText? = null
     var buttonCreate: Button? = null
 
     private var imageFile: File? = null
+
+    var categoriesProvider: CategoriesProvider? = null
+    var sharedPref: SharedPref? = null
+    var user:User? = null
 
 
 
@@ -36,6 +50,8 @@ class RestaurantCategoryFragment : Fragment() {
         // Inflate the layout for this fragment
       myView = inflater.inflate(R.layout.fragment_restaurant_category, container, false)
 
+        sharedPref = SharedPref(requireActivity())
+
         imageViewCategory = myView?.findViewById(R.id.imageview_category)
         editTextCategory = myView?.findViewById(R.id.edittext_category)
         buttonCreate = myView?.findViewById(R.id.btn_create)
@@ -44,12 +60,51 @@ class RestaurantCategoryFragment : Fragment() {
         buttonCreate?.setOnClickListener { createCategory() }
 
 
+        getUserFromSession()
+        categoriesProvider = CategoriesProvider(user?.sessionToken!!)
+
         return myView
     }
 
+    private fun getUserFromSession(){
+
+        val gson = Gson()
+
+        if(!sharedPref?.getData("user").isNullOrBlank()){
+            //si el usuario existe en session
+            user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
+        }
+
+    }
+
     private fun createCategory(){
-        var categoty = editTextCategory?.text.toString()
+        val name = editTextCategory?.text.toString()
+
         if (imageFile != null){
+
+            val category = Category(name = name)
+
+            categoriesProvider?.create(imageFile!!, category)?.enqueue(object: Callback<ResponseHttp>{
+                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+
+                    Log.d(TAG,"RESPONSE: $response")
+                    Log.d(TAG,"BODY: ${response.body()}")
+
+                    Toast.makeText(requireContext(),response.body()?.message,Toast.LENGTH_LONG).show()
+
+                    if(response.body()?.isSuccess == true){
+                        clearForm()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    Log.d(TAG,"Error: ${t.message}")
+                    Toast.makeText(requireContext(),"Error: ${t.message}",Toast.LENGTH_LONG).show()
+
+                }
+
+            })
 
         }
         else{
@@ -57,6 +112,11 @@ class RestaurantCategoryFragment : Fragment() {
         }
     }
 
+    private fun clearForm(){
+        editTextCategory?.setText("")
+        imageFile = null
+        imageViewCategory?.setImageResource(R.drawable.ic_imagr)
+    }
 
     private  val startImageForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result: ActivityResult ->

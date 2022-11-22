@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.restaurant.RestaurantCategoryFragment">
 
     <LinearLayout
@@ -40,9 +41,11 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="260dp"
-        android:backgroundTint="@color/green"
         android:background="@drawable/round_button"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="65dp"/>
+        android:layout_marginBottom="65dp"
+        app:backgroundTint="@color/black"
+        android:textColor="@color/green"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

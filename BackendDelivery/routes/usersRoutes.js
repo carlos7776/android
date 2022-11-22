@@ -13,6 +13,6 @@ module.exports = (app, upload) => {
     // ACTUALIZAR DATOS
     //401 NO AUTORIZADO
 
-    app.put('/api/users/update',passport.authenticate('jwt',{session:false}), upload.array('image', 1), UsersController.update);
+    app.put('/api/users/update', passport.authenticate('jwt',{session:false}), upload.array('image', 1), UsersController.update);
     app.put('/api/users/updateWithoutImage', passport.authenticate('jwt',{session:false}), UsersController.updateithoutImage);
 }
