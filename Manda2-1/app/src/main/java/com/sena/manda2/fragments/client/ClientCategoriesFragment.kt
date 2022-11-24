@@ -29,8 +29,8 @@ class ClientCategoriesFragment : Fragment() {
     val TAG = "CategoriesFragment"
     var myView: View? = null
     var recyclerViewCategories: RecyclerView? = null
-    var categoriesProvider: CategoriesProvider? = null
     var adapter:CategoriesAdapter? = null
+    var categoriesProvider: CategoriesProvider? = null
     var user: User? = null
     var sharedPref: SharedPref? = null
     var categories = ArrayList<Category>()
@@ -50,7 +50,8 @@ class ClientCategoriesFragment : Fragment() {
 
         recyclerViewCategories = myView?.findViewById(R.id.recyclerview_categories)
         recyclerViewCategories?.layoutManager = LinearLayoutManager(requireContext())
-            sharedPref = SharedPref(requireActivity())
+
+        sharedPref = SharedPref(requireActivity())
 
         getUserFromSession()
 
