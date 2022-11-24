@@ -1,3 +1,4 @@
+const { getAll } = require('../models/category');
 const Category = require('../models/category')
 const storage = require('../utils/cloud_storage')
 
@@ -49,6 +50,26 @@ module.exports =  {
                 error:error
             });
         }
+    },
+    async getAll(req,res,next){
+
+        try {
+            
+        const data = await Category.getAll()
+
+        return res.status(201).json(data);
+            
+        } catch (error) {
+            console.log('Error',error);
+
+            return res.status(501).json({
+                success: false,
+                message: 'Hubo un error al crear la categoria ',
+                error:error
+            });
+            
+        }
+
     }
 
 
