@@ -24,29 +24,30 @@
         tools:targetApi="31">
         <activity
             android:name=".Activities.client.update.ClientUpdateActivity"
-            android:exported="false">
+            android:exported="true"
+            android:parentActivityName=".Activities.client.home.ClientHomeActivity">
             <meta-data
                 android:name="android.app.lib_name"
-                android:value="" />
+                android:value="true" />
         </activity>
         <activity
             android:name=".Activities.SaveImageActivity"
             android:exported="true"></activity>
         <activity
             android:name=".Activities.delivery.home.DeliveryHomeActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activities.restaurant.home.RestaurantHomeActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activities.SelectRolesActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activities.client.home.ClientHomeActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activities.RegisterActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
