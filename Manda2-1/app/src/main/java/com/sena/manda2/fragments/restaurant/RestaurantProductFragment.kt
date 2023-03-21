@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -15,16 +16,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import com.sena.manda2.R
-import com.sena.manda2.adapters.CategoriesAdapter
 import com.sena.manda2.models.Category
+import com.sena.manda2.models.Product
+import com.sena.manda2.models.ResponseHttp
 import com.sena.manda2.models.User
 import com.sena.manda2.providers.CategoriesProvider
+import com.sena.manda2.providers.ProductsProvider
 import com.sena.manda2.utils.SharedPref
+import com.tomma
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,6 +50,7 @@ class RestaurantProductFragment : Fragment() {
     var imageFile3:File? = null
 
     var idCategory = ""
+    var productsProvider: ProductsProvider? = null
     var categoriesProvider: CategoriesProvider? = null
     var user: User? = null
     var sharedPref: SharedPref? = null
@@ -133,14 +136,64 @@ class RestaurantProductFragment : Fragment() {
             user = gson.fromJson(sharedPref?.getData("user"), User::class.java)
         }
     }
-    private fun createProduct(){
+    private fun createProduct() {
         val name = editTextName?.text.toString()
         val description = editTextDescription?.text.toString()
-        val pricetext = editTextPrice?.text.toString()
+        val priceText = editTextPrice?.text.toString()
 
-        if (isValidForm(name, description, pricetext)){
-            
+        val files = ArrayList<File>()
+
+
+        if (isValidForm(name, description, priceText)) {
+
+            val product = Product(
+                name = name,
+                description = description,
+                price = priceText.toDouble(),
+                idCategory = idCategory
+            )
+
+            files.add(imageFile1!!)
+            files.add(imageFile2!!)
+            files.add(imageFile3!!)
+
+            ProgressDialogFragment.showProgressBar(requireActivity())
+
+            productsProvider?.create(files, product)?.enqueue(object: Callback<ResponseHttp> {
+                override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+                    ProgressDialogFragment.hideProgressBar(requireActivity())
+
+                    Log.d(TAG, "Response: $response")
+                    Log.d(TAG, "Body: ${response.body()}")
+                    Toast.makeText(requireContext(), response.body()?.message, Toast.LENGTH_LONG).show()
+
+                    if (response.body()?.isSuccess == true) {
+                        resetForm()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    ProgresDialogFragment.hideProgressBar(requireActivity())
+                    Log.d(TAG, "Error: ${t.message}")
+                    Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
+                }
+
+            })
+
         }
+
+    }
+
+    private fun resetForm() {
+        editTextName?.setText("")
+        editTextDescription?.setText("")
+        editTextPrice?.setText("")
+        imageFile1 = null
+        imageFile2 = null
+        imageFile3 = null
+        imageViewProduct1?.setImageResource(R.drawable.ic_image)
+        imageViewProduct2?.setImageResource(R.drawable.ic_image)
+        imageViewProduct3?.setImageResource(R.drawable.ic_image)
     }
 
     private fun isValidForm(name:String, description:String, price:String):Boolean{

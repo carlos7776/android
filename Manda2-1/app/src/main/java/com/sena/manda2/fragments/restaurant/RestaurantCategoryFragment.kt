@@ -115,7 +115,7 @@ class RestaurantCategoryFragment : Fragment() {
     private fun clearForm(){
         editTextCategory?.setText("")
         imageFile = null
-        imageViewCategory?.setImageResource(R.drawable.ic_imagr)
+        imageViewCategory?.setImageResource(R.drawable.`ic_image.xml`)
     }
 
     private  val startImageForResult =

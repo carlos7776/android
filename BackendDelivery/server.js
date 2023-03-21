@@ -52,7 +52,7 @@ app.set('port', port);
 users(app,upload);
 categories(app,upload);
 
-server.listen(3001, '192.168.0.24' || 'localhost', function() {
+server.listen(3001, '10.183.145.218' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
