@@ -26,7 +26,8 @@ import com.sena.manda2.models.User
 import com.sena.manda2.providers.CategoriesProvider
 import com.sena.manda2.providers.ProductsProvider
 import com.sena.manda2.utils.SharedPref
-import com.tomma
+import com.tommasoberlose.progressdialog.ProgressDialogFragment
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -173,7 +174,7 @@ class RestaurantProductFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
-                    ProgresDialogFragment.hideProgressBar(requireActivity())
+                    ProgressDialogFragment.hideProgressBar(requireActivity())
                     Log.d(TAG, "Error: ${t.message}")
                     Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_LONG).show()
                 }
